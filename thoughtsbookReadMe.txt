@@ -8,4 +8,11 @@ github folder location :
 maven repository location : 
 tomcat start/stop : go to bin of tomcat location mentioned above ; sh catalina.sh start ; sh catalina.sh stop
 tomcat logs view : go to logs directory of tomcat ; tail -f catalina.out
-ui starting page for new user for registration : /Users/tseten/Documents/do/ui/html/UserRegistration.html 
+ui starting page for new user for registration : /Users/tseten/Documents/do/ui/html/UserRegistration.html
+
+
+
+some git commands frequently used : 
+git add a.txt
+git commit -m " modified a.txt " 
+git push -u origin master 
