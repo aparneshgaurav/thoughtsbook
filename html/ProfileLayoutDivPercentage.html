@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>thoughtsbook.com</title>	
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var parameters = location.search.substring(1).split("&");
+    var username = parameters[0].split("=");
+    var password = parameters[1].split("=");
+    var testString = "initial string";
+    // getElement("profilePic").src  = "";
+
+
+    
+
+
+
+    function getElement(id) { return document.getElementById(id); } // Get el by ID helper function
+
+
+    // alert("username is : "+username[1]);
+    // alert("password is : "+password[1]);	
+    jQuery.ajax({
+        url: "http://localhost:8080/thoughtsbook/thoughtsbook/login/"+username[1]+"/"+password[1],
+        dataType: 'text',
+        success: function(data){
+    	// alert("came in the call back function"+data);
+    	if(data=="authenticated"){
+    		 // alert("authenticated");
+    		 $("#welcomeText").val(username[1]);  
+    	}
+    }   
+	});
+
+	 jQuery.ajax({
+        url: "http://localhost:8080/thoughtsbook/thoughtsbook/login/getUserData/"+username[1],
+        dataType: 'text',
+        success: function(data){
+    	 getElement("profilePic").src  = data;
+    	 // an ajax db call to be made to fetch the list of books as per the user id and the category clicked 
+    	 testString = "Book1IntitialBook";
+    }   
+	});
+
+	 $("#createCategory").click(function() {
+
+
+
+	 	
+
+
+
+	 	/* Actions invoked under the function method */
+	 	// alert("button clicked");
+	 	var newCategoryButton = $("<button></button>");
+	 	var text2 = $("#newCategoryInput").val();
+
+
+	 	newCategoryButton.text(text2);
+	 	newCategoryButton.attr("class","categoryClass");
+
+
+	 	$("#divForButtons").append(newCategoryButton);
+	 	// alert("appended");
+
+	 	$(".categoryClass").click(function(e){
+	 		// alert("newly created button has been clicked ");
+	 		alert($(this).text());	
+	 		var categoryName = $(this).text();
+	 		var newDivElementForCategory = $("<div></div>");
+	 		newDivElementForCategory.attr("style","top: 17%; left: 5%; right: 5%; bottom: 2%; position: absolute; background-color: black;border-style:solid");
+	 		
+	 		newDivElementForCategory.html("<span style='font-family:cursive'><p  align='center'><font size='5' color='white'><strong>Category : "+$(this).text()+"</strong></font></p><span>");
+
+	 		// operations for left div
+	 		var nestedDivElementLeftForCategory = $("<div></div>");
+	 		nestedDivElementLeftForCategory.attr("style","top: 10%; left: 5%; right: 80%; bottom: 2%; position: absolute; background-color: black;border-style:solid");
+	 		
+	 		// to get the list of books corresponding to the software , parameters to be sent are username and category : 
+	 		// wip : start work from line no 81 over here : 
+	 		// after this work , the code to refresh and repopulate the books in the left div has to be called from the 
+	 		// save page button . 	
+
+	 		// alert("hello , before rendering the booklist ");
+
+	 		/*
+
+	 		var bookList = "";
+				jQuery.ajax({
+			        url: "http://localhost:8080/thoughtsbook/thoughtsbook/login/getBookListForUserAndCategory/"+username[1]+"/"+categoryName,
+			        dataType: 'text',
+			        success: function(data){
+			        	alert(data);
+			    	// alert("came in the call back function"+data);
+			    	bookList = data;
+			    }   
+				});
+			*/
+			// alert("booklist is : "+bookList);
+           
+            displayBook(nestedDivElementLeftForCategory,testString);
+          
+
+	 		// operations for right div
+	 		var nestedDivElementRightForCategory = $("<div></div>");
+	 		nestedDivElementRightForCategory.attr("style","top: 10%; left: 22%; right: 5%; bottom: 2%; position: absolute; background-color: black;border-style:solid");
+	 		
+	 		// making a div in the nestedDivElementRightForCategory to adjust book save button and for page number 
+
+	 		var divForPageSave = $("<div></div>");
+	 		divForPageSave.attr("style","top: 1%; left: 5%; right: 30%; bottom: 93%; position: absolute; background-color: white;border-style:solid;border-radius: 25px;");
+	 		divForPageSave.html("<table><tr><td><input id='inputPageNumber' type='text' value = 'page number' /></td><td><input id='inputBookName' type='text' value = 'book name' /></td><td><button id='savePageButton'>save page</button></td></tr></table>");
+
+
+	 		var divForTextArea = $("<div></div>");
+	 		divForTextArea.attr("style","top: 8%; left: 5%; right: 5%; bottom: 1%; position: absolute; background-color: white;border-style:solid;border-radius: 25px;");
+	 		// making a text area where the content of page can be written and it should almost fill up the div - divForTextArea
+
+	 		var textAreaForDiv = $("<textarea></textarea>");
+	 		textAreaForDiv.attr("style","width:99%;height:99%;font-size:16px;font-family:cursive;");
+	 		textAreaForDiv.text(" Just write it ! .... ");
+	 		// textAreaForDiv.attr("font-size","14px");
+	 		divForTextArea.append(textAreaForDiv);
+
+	 		// divForTextArea.html("<p  align='center'><font size='4' color='black'> Just write it ! </font></p>");
+	 		
+	 		
+
+	 		nestedDivElementRightForCategory.append(divForPageSave);
+	 		nestedDivElementRightForCategory.append(divForTextArea);
+
+
+	 		// end of operations for right div
+	 		newDivElementForCategory.append(nestedDivElementLeftForCategory);
+	 		newDivElementForCategory.append(nestedDivElementRightForCategory);
+	 		$("#myLibraryPanel").append(newDivElementForCategory);
+
+
+
+	 		// first of all , alert the page number and the current page content
+	 		// then write a jquery ajax method to save both of them 
+
+	 		// var pageNumber = $("#inputPageNumber").val();
+	 		// var pageContent = textAreaForDiv.val();
+	 		// alert("user name is : "+username[1]);
+	 		// var bookName = $("#inputBookName").val();
+	 		// alert("book name is ")
+
+	 		// Now , it's the time to save the user name and category by jquery ajax call of get method 
+
+	 		jQuery.ajax({
+		        url: "http://localhost:8080/thoughtsbook/thoughtsbook/register/attachUserNameWithCategory/"+username[1]+"/"+text2,
+		        dataType: 'text',
+		        success: function(data){
+		    	// alert("came in the call back function"+data);
+		    	alert("category is saved with user name status : "+data);
+		    }   
+			}); // end of jquery ajax call 
+
+
+	 		// Now , it's the time to save the book details to bookDetails table 
+			$("#savePageButton").click(function() {
+				/* Act on the event */
+				jQuery.ajax({
+		        url: "http://localhost:8080/thoughtsbook/thoughtsbook/register/attachBookDetailsWithCategoryAndUserName/"+username[1]+"/"+text2+"/"+$("#inputBookName").val()+"/"+$("#inputPageNumber").val()+"/"+textAreaForDiv.val(),
+		        dataType: 'text',
+		        success: function(data){
+		    	// here , as part of the data received in callback should be the list of books as per the user id and cateogory
+		    	// which also includes the book which just recently got saved . 
+		    	alert("book details are saved now  : "+data);
+		    }   
+			}); // end of jquery ajax call 
+
+				// to call the display book button with the new updated list of books fetched from db 
+				displayBook(nestedDivElementLeftForCategory,"newBookAtLaterTime");
+
+
+
+			}); // end of functionalities called on save page button
+
+
+	 	});
+
+
+	 }); // create category on button function ends
+
+function displayBook(nestedDivElementLeftForCategory,passedString){
+	// alert("these books are being displayed !"+passedString);
+			nestedDivElementLeftForCategory.empty();
+
+			// iterate the logic to have multiple buttons with the name of the passed string . 
+			for(var i=0;i<3;i++){
+	        var buttonElement = $("<button></button>");
+	        // alert("passed string is : "+passedString);
+	 		buttonElement.text(passedString);
+	 		buttonElement.attr("style","color:black;font-family:cursive");
+	 		buttonElement.click(function(e){
+	 			$("#bookLayout").show(); 
+	 		});
+	 		nestedDivElementLeftForCategory.append(buttonElement);
+	 	    }
+
+
+
+	 		// first alert string elements from a string array
+	 		// for(var i=0;i<3;i++){
+	 			// alert(i);
+	 		// }
+
+	// return string1+"!!!!";
+}
+
+$("#closeBookLayout").click(function(){
+    $("#bookLayout").hide();
+});
+
+	
+
+}); // end of document ready method
+</script>
+</head>
+<body>
+	<!--  KEEP THE HTML CODES HERE-->
+
+	<!-- start of full screen div -->
+	<div id="fullScreenDiv"
+		style="width: 98.5%; height: 98%; position: absolute; background-color: white;border-style:solid;">
+		
+		
+		<!--  end of the header div -->
+		
+		<!-- div used for the login screen -->
+       <div id="myProfilePanel"
+			style="top: .5%; left: .5%; right: 70%; bottom: .5%; position: absolute; background-color: black;border-style:solid">
+			    <span style="font-family:cursive">
+				<p  align="center"><font size="5" color="white"><strong>thoughtsbook.com</strong></font></p>
+				<p  align="center">
+					<font size="5" color="white"><strong>welcome dear : </strong></font> 
+					<input id='welcomeText' value='unauthenticated' color='white' />
+					
+				</p>
+			    </span>
+				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<image id="profilePic" width="300" height="300"/>
+				
+		</div>
+
+		<!-- end of the login div -->
+
+
+		<!-- start of the right div -->
+
+        <div id="myLibraryPanel" 
+			style="top: .5%; left: 30.5%; right: .5%; bottom: .5%; position: absolute; background-color:black;border-style:solid">
+				<p  align="center" >
+					<span style="font-family:cursive">
+					<font size="5" color="white" font-family="cursive" ><strong>My Library !</strong></font>
+					</span>
+				</p>
+				
+
+			   <div id = "containerForDivForButtons" 
+			   style="top: 7%; left: 5%; right: 5%; bottom: 85%; position: absolute; background-color: black;border-style:solid">
+
+					   <div id = "divForButtons" 
+					   style="top: 8%; left: 5%; right: 5%; bottom: 5%; position: absolute; background-color: black;">
+					   
+					   <table style="background-color:black">
+					   <tr>
+					   	<td> <input id="newCategoryInput" type="text" value="enter category name" /></td>
+					   	<td> <button id = "createCategory"> create </button></td>
+					   </tr>
+					   </table>
+					   <button class="categoryClass"> science </button><button class="categoryClass"> poetry </button>
+
+					   </div>	<!-- end of the div divForButtons  -->
+					   
+			    
+			  
+			   </div> <!-- end of div containerForDivForButtons -->
+
+
+		</div>		<!-- end of the my library div -->
+	
+	</div> <!-- end of full screen div -->
+
+	<!-- Following code is for the pop up div at another z index which will render the contents of the book : -->
+	<div id="bookLayout" style="left:3%;top:3%;width: 90%; height: 90%; position: absolute; background-color: white; border-style:solid;border-radius: 25px;z-index:5;display:none;">
+
+        
+		<div id="leftInnerDiv" style="height:90%;width:45%;left:5%;right:45%;top:3%;bottom:6%; position: absolute; background-color: white; border-style:solid;z-index:5;border-radius: 25px;">
+		</div>
+
+		<div id="rightInnerDiv" style="height:90%;width:45%;left:52%;right:3%;top:3%;bottom:6%; position: absolute; background-color: white; border-style:solid;z-index:5;border-radius: 25px;">
+		</div>
+
+		<div id="bottomDiv" style="left:27%;right;30%;top:95%;bottom:2.5%;height:3%;width:50%; position: absolute; background-color: white; border-style:solid;z-index:5;border-radius: 25px;">
+			<table align="center">
+			<tr>
+			<th><button id="prevPage">previous page</button></th>
+			<th><button id="closeBookLayout">close book</button></th>
+			<th><button id="nextPage">next page</button></th>
+		    </tr>
+		    </table>
+		</div>
+		
+		
+
+		
+
+	</div>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+function appendText() {
+                  // Create text with HTML
+    var areaElement = $("<input></input>"); 
+    areaElement.attr("value","lksjdflkj"); 
+    areaElement.attr("type","password");
+    
+    $("body").append(areaElement);     // Append new elements
+
+
+    /*
+
+			var newDivElement = $("<div></div>");
+	 		newDivElement.attr("style","background-color:white");
+	 		// alert("the new div element is : "+newDivElement);
+	 		newDivElement.html("<p align='center'><font size='5' color='black'><strong>Newly added category ! </strong></font></p>");
+	 		newDivElement.insertAfter($("#category7"));
+	 		
+    */
+
+}
+</script>
+</head>
+<body>
+
+<p>This is a paragraph.</p>
+<button onclick="appendText()">Append text</button>
+
+</body>
+</html>

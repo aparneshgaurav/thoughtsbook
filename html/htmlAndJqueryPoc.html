@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>thoughtsbook.com</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<head>
+
+<script type="text/javascript">
+$(document).ready(function(){
+ $("#clickMe").click(function(){
+   // alert("hello i am clicked");
+   $("#innnerDiv2").hide();
+ });
+ $("#clickMe1").click(function(){
+   // alert("hello");
+   $("#innnerDiv2").show();
+ });
+ $("#close").click(function(){
+   // alert("hello");
+   $("#innnerDiv2").hide();
+ });
+});
+
+</script>
+</head>
+
+<body>
+
+<div id="wholeDiv" style="width:98%;height:98%;background-color:green;position:absolute;" >
+  <button id="clickMe" >click me to hide popup</button>
+   <button id="clickMe1" >clickMe to create popup</button>
+   
+  <!--
+  <div id="innnerDiv1" style="left:20%;top:20%;z-index:55;width:50%;height:50%;background-color:red;position:absolute;display:true;">
+  </div>
+  -->
+
+  <div id="innnerDiv2" style="left:20%;top:20%;z-index:6;width:50%;height:50%;background-color:orange;position:absolute;display:none;">
+    <button id="close"> close popup </button>
+  </div>
+
+</div>
+ 
+
+   
+
+
+
+</body>
+</html>

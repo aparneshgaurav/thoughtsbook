@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>thoughtsbook.com</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  
+
+
+function EL(id) { return document.getElementById(id); } // Get el by ID helper function
+
+function readFile() {
+  // alert(this.parent(selector);
+  if (this.files && this.files[0]) {
+    var FR= new FileReader();
+    FR.onload = function(e) {
+      // alert("test!!!"+e.target.result+"!!!test");
+      EL("img").src  = e.target.result;
+      // alert()
+      EL("b64").innerHTML = e.target.result;
+    };       
+    FR.readAsDataURL( this.files[0] );
+  }
+}
+
+EL("inp").addEventListener("change", readFile, false);
+
+
+});
+
+
+</script>
+</head>
+<body>
+ 
+<input id="inp" type='file'>
+<p id="b64"></p>
+<img id="img" />
+
+</body>
+</html>
